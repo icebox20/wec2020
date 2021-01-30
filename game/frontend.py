@@ -110,13 +110,14 @@ secondClick = ()
 sizeToBoard = {8: 0, 10: 1, 12: 2, 14:3, 16:4}
 
 game = ChessEngine.GameState()
-validMoves = game.allValidMoves(sizeToBoard[size])
-moveMade = False
 
 running, size = ask_for_size(screen, font, pygame)
 screenx = (size*50)+80 + 200
 screeny = (size*50)+80
 screen = pygame.display.set_mode([screenx, screeny])
+
+validMoves = game.allValidMoves(sizeToBoard[size])
+moveMade = False
 
 while running:
 
