@@ -1,5 +1,6 @@
 import pygame
 import pygame.freetype
+import ChessEngine
 
 pygame.init()
 pygame.font.init()
@@ -28,11 +29,11 @@ def load_images():
 
 
 def coords_to_notation(coords):
-    return f'{chr(97 + coords[0])}{8 - coords[1]}'
+    return int(((coords[0] - 50) /(50))), int(size - ((coords[1] - 50) /(50)))
 
 
 def notation_to_coords(notation):
-    convert = {"a": 1, "b": 2, "c": 3, "d": 4, "e": 5, "f": 6, "g": 7, "h": 8, "i": 9, "j": 10, "k": 11, "l": 12 }
+    convert = {"a": 1, "b": 2, "c": 3, "d": 4, "e": 5, "f": 6, "g": 7, "h": 8, "i": 9, "j": 10, "k": 11, "l": 12}
     if isinstance(notation, str):
         return 40 + 50 * (convert[notation] - 1)
 
@@ -63,55 +64,63 @@ def draw_piece(screen, piece, x, y):
         font.render_to(screen, (45 + (col * 50), (size + 1) * 50), chr(65 + col))
 
 
-def init_board(screen):
-    #pawns
-    for i in range(size):
-        screen.blit(IMAGES['wP'], pygame.Rect(notation_to_coords(i + 1), notation_to_coords(2), 50, 50))
-        screen.blit(IMAGES['bP'], pygame.Rect(notation_to_coords(i + 1), notation_to_coords(size - 1), 50, 50))
-    #rooks
-        if i == 0 or i == size-1:
-            screen.blit(IMAGES['wR'], pygame.Rect(notation_to_coords(size - (i)), notation_to_coords(1), 50, 50))
-            screen.blit(IMAGES['bR'], pygame.Rect(notation_to_coords(size - (i)), notation_to_coords(size), 50, 50))
-    #knights
-        if i == 1 or i == size-2:
-            screen.blit(IMAGES['wN'], pygame.Rect(notation_to_coords(size - (i)), notation_to_coords(1), 50, 50))
-            screen.blit(IMAGES['bN'], pygame.Rect(notation_to_coords(size - (i)), notation_to_coords(size), 50, 50))
-    #bishops
-        if i == 2 or i == size-3:
-            screen.blit(IMAGES['wB'], pygame.Rect(notation_to_coords(size - (i)), notation_to_coords(1), 50, 50))
-            screen.blit(IMAGES['bB'], pygame.Rect(notation_to_coords(size - (i)), notation_to_coords(size), 50, 50))
-    #kingqueen
-        screen.blit(IMAGES['wK'], pygame.Rect(notation_to_coords(size - (size/2)), notation_to_coords(1), 50, 50))
-        screen.blit(IMAGES['bK'], pygame.Rect(notation_to_coords(size - (size/2) + 1), notation_to_coords(size), 50, 50))
-        screen.blit(IMAGES['wQ'], pygame.Rect(notation_to_coords(size - (size/2) + 1), notation_to_coords(1), 50, 50))
-        screen.blit(IMAGES['bQ'], pygame.Rect(notation_to_coords(size - (size/2)), notation_to_coords(size), 50, 50))
+def display_board(screen):
+    test = [
+        ["bR", "bN", "bB", "bQ", "bK", "bB", "bN", "bR"],
+        ["bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP"],
+        ["--", "--", "--", "--", "--", "--", "--", "--"],
+        ["--", "--", "--", "--", "--", "--", "--", "--"],
+        ["--", "--", "--", "--", "--", "--", "--", "--"],
+        ["--", "--", "--", "--", "--", "--", "--", "--"],
+        ["wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP"],
+        ["wR", "wN", "wB", "wK", "wQ", "wB", "wN", "wR"]
+    ]
 
-    if size >= 10:
-        screen.blit(IMAGES['wN'], pygame.Rect(notation_to_coords(size - (size/2) + 2), notation_to_coords(1), 50, 50))
-        screen.blit(IMAGES['bN'], pygame.Rect(notation_to_coords(size - (size/2) + 1 + 1), notation_to_coords(size), 50, 50))
-        screen.blit(IMAGES['wN'], pygame.Rect(notation_to_coords(size - (size/2) - 1), notation_to_coords(1), 50, 50))
-        screen.blit(IMAGES['bN'], pygame.Rect(notation_to_coords(size - (size/2) - 1), notation_to_coords(size), 50, 50))
+    for i, row in enumerate(game.board[sizeToBoard[size]]):
+        for j, piece in enumerate(row):
+            if piece == "--":
+                pass
+            else:
+                screen.blit(IMAGES[piece], pygame.Rect(notation_to_coords(j + 1), notation_to_coords(i + 1), 50, 50))
 
 
-
-    return
+def move_piece(start, end):
+    print("Move")
+    ChessEngine.Move((2,2),(3,3),game.board[0])
 
 
 size = 8
 running = True
 load_images()
+firstClick = ()
+secondClick = ()
+
+sizeToBoard = {8: 0, 10: 1, 12: 2}
+
+game = ChessEngine.GameState()
 
 while running:
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            location = pygame.mouse.get_pos()
+            print(location)
+            print("Location:", coords_to_notation(location))
+            if firstClick == ():
+                firstClick = location
+
+            else:
+                secondClick = location
+                firstClick = ()
+                move_piece(firstClick, secondClick)
 
     screen.fill((255, 255, 255))
 
     draw_squares(screen, size)
     draw_coords(screen, font, size)
-    init_board(screen)
+    display_board(screen)
     pygame.display.flip()
 
 # Done! Time to quit.
