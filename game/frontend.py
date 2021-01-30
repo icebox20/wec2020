@@ -87,7 +87,7 @@ def display_board(screen):
 def move_piece(start, end):
     print("Move", start, end)
     move = ChessEngine.Move(start,end,game.board[0])
-    game.makeMove(move)
+    game.makeMove(move, sizeToBoard[size] )
 
 
 size = 8
