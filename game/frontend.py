@@ -140,6 +140,7 @@ while running:
             if ((location[0] > (screenx - 40 - 150)) and (location[0] < (screenx - 40))) and ((location[1] > screeny/2) and (location[1] < (screeny/2)+50)):
                 print("Undo")
                 game.undoMove(sizeToBoard[size])
+                moveMade = True
 
     screen.fill((255, 255, 255))
 
