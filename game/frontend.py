@@ -106,10 +106,13 @@ def move_piece(start, end):
             moveMade = True
             game.makeMove(move, sizeToBoard[size])
         else:
+            moveMade = False
             print("invalid")
 
     if moveMade:
         validMoves = game.allValidMoves(sizeToBoard[size])
+        for i in range(1):
+            print(validMoves[i].startRow, validMoves[i].startCol, "|", validMoves[i].endRow, validMoves[i].endCol)
         moveMade = False
     
 running = True
