@@ -64,13 +64,40 @@ def draw_piece(screen, piece, x, y):
 
 
 def init_board(screen):
+    #pawns
     for i in range(size):
         screen.blit(IMAGES['wP'], pygame.Rect(notation_to_coords(i + 1), notation_to_coords(2), 50, 50))
-        screen.blit(IMAGES['bP'], pygame.Rect(notation_to_coords(i + 1), notation_to_coords(9), 50, 50))
+        screen.blit(IMAGES['bP'], pygame.Rect(notation_to_coords(i + 1), notation_to_coords(size - 1), 50, 50))
+    #rooks
+        if i == 0 or i == size-1:
+            screen.blit(IMAGES['wR'], pygame.Rect(notation_to_coords(size - (i)), notation_to_coords(1), 50, 50))
+            screen.blit(IMAGES['bR'], pygame.Rect(notation_to_coords(size - (i)), notation_to_coords(size), 50, 50))
+    #knights
+        if i == 1 or i == size-2:
+            screen.blit(IMAGES['wN'], pygame.Rect(notation_to_coords(size - (i)), notation_to_coords(1), 50, 50))
+            screen.blit(IMAGES['bN'], pygame.Rect(notation_to_coords(size - (i)), notation_to_coords(size), 50, 50))
+    #bishops
+        if i == 2 or i == size-3:
+            screen.blit(IMAGES['wB'], pygame.Rect(notation_to_coords(size - (i)), notation_to_coords(1), 50, 50))
+            screen.blit(IMAGES['bB'], pygame.Rect(notation_to_coords(size - (i)), notation_to_coords(size), 50, 50))
+    #kingqueen
+        screen.blit(IMAGES['wK'], pygame.Rect(notation_to_coords(size - (size/2)), notation_to_coords(1), 50, 50))
+        screen.blit(IMAGES['bK'], pygame.Rect(notation_to_coords(size - (size/2) + 1), notation_to_coords(size), 50, 50))
+        screen.blit(IMAGES['wQ'], pygame.Rect(notation_to_coords(size - (size/2) + 1), notation_to_coords(1), 50, 50))
+        screen.blit(IMAGES['bQ'], pygame.Rect(notation_to_coords(size - (size/2)), notation_to_coords(size), 50, 50))
+
+    if size >= 10:
+        screen.blit(IMAGES['wN'], pygame.Rect(notation_to_coords(size - (size/2) + 2), notation_to_coords(1), 50, 50))
+        screen.blit(IMAGES['bN'], pygame.Rect(notation_to_coords(size - (size/2) + 1 + 1), notation_to_coords(size), 50, 50))
+        screen.blit(IMAGES['wN'], pygame.Rect(notation_to_coords(size - (size/2) - 1), notation_to_coords(1), 50, 50))
+        screen.blit(IMAGES['bN'], pygame.Rect(notation_to_coords(size - (size/2) - 1), notation_to_coords(size), 50, 50))
+
+
+
     return
 
 
-size = 10
+size = 8
 running = True
 load_images()
 
