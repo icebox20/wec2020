@@ -96,8 +96,8 @@ class GameState():
             self.board[boardNum][move.endRow][move.endCol] = move.pieceCaptured
             self.whiteToMove = not self.whiteToMove
 
-    def allValidMoves(self):
-        return self.allPossibleMoves()
+    def allValidMoves(self, boardNum):
+        return self.allPossibleMoves(boardNum)
 
     def allPossibleMoves(self, boardNum):
         moves_list = []
@@ -109,18 +109,17 @@ class GameState():
                     if userPiece == "P":
                         self.PawnMove(boardNum, y, x, moves_list)
                     elif userPiece == "R":
-
+                        pass
                     elif userPiece == "N":
-
+                        pass
                     elif userPiece == "B":
-
+                        pass
                     elif userPiece == "Q":
-
+                        self.QueenMove(boardNum, y, x, moves_list)
                     elif userPiece == "K":
-
+                        self.KingMove(boardNum, y, x, moves_list)
                     else:
-
-
+                        pass
         return moves_list
 
 
@@ -132,33 +131,48 @@ class GameState():
                 moves_list.append(Move((y, x), (y - 1, x), self.board))
                 if y == boardSize[boardNum] and self.board[y-2][x] == "--":
                     moves_list.append(Move((y, x), (y - 2, x), self.board))
-
             # capturing piece to left
             if (x - 1) >= 0:
                 if self.board[y - 1][x - 1][0] == "black":
                     moves_list.append(Move((y, x), (y - 1, x - 1), self.board))
-
             # capturing piece to right
-            if (x + 1) <= boardSize[boardNum]+1:
+            if (x + 1) <= boardSize[boardNum]-1:
                 if self.board[y - 1][x + 1][0] == "black":
                     moves_list.append(Move((y, x), (y + 1, x + 1), self.board))
-
         # Regular movement of Black pawn
         else:
             if self.board[y + 1][x] == "--":
                 moves_list.append(Move((y, x), (y + 1, x), self.board))
                 if y == 2 and self.board[y+2][x] == "--":
                     moves_list.append(Move((y, x), (y + 2, x), self.board))
-
             # capturing piece to left
-            if (x + 1) <= boardSize[boardNum]+1:
+            if (x + 1) >= 0:
                 if self.board[y + 1][x + 1][0] == "black":
                     moves_list.append(Move((y, x), (y + 1, x + 1), self.board))
-
             # capturing piece to right
-            if (x - 1) >= 0:
+            if (x - 1) <= boardSize[boardNum]-1:
                 if self.board[y + 1][x - 1][0] == "black":
                     moves_list.append(Move((y, x), (y - 1, x - 1), self.board))
+
+    def QueenMove(self, boardNum, y, x, moves_list):
+        # turnQueenMoved = 0
+        # if turnQueenMoved < len(moves_list) + 5 or turnQueenMoved == 0:
+            self.RookMoves(boardNum, y, x, moves_list)
+            self.BishopMoves(boardNum, y, x, moves_list)
+            # turnQueenMoved = len(moves_list)
+
+
+    def KingMove(self, boardNum, y, x, moves_list):
+        boardSize = [6, 8, 10, 12, 14]
+        kingMoves = ((-1, -1), (-1, 0), (-1, -1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1))
+        allyColor = "w" if self.whiteToMove else "b"
+        for i in range(boardSize[boardNum]):
+            endY = y + kingMoves[i][0]
+            endX = x + kingMoves[i][1]
+            if 0 <= endY < boardSize[boardNum] and 0 <= endX < boardSize[boardNum]:
+                endPiece = self.board[boardNum][endY][endX]
+                if endPiece[0] != allyColor:
+                    moves_list.append(Move((y,x), (endY, endX), self.board[boardNum]))
 
 class Move():
     # Chess notation

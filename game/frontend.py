@@ -24,7 +24,6 @@ ORANGE = (255, 165, 0)
 pieces = ['wP', 'wB', 'wR', 'wN', 'wQ', 'wK', 'wV', 'bP', 'bB', 'bR', 'bN', 'bQ', 'bK', 'bV']
 IMAGES = {}
 
-
 def load_images():
     for piece in pieces:
         # print("assets/chess_pieces/" + piece + ".png")
@@ -86,20 +85,24 @@ def display_board(screen):
             else:
                 screen.blit(IMAGES[piece], pygame.Rect(notation_to_coords(size - (j)), notation_to_coords(size - (i)), 50, 50))
 
+moveMade = False    # flag for when move is made
 
 def move_piece(start, end):
+    global moveMade
     print("Move", start, end)
     move = ChessEngine.Move(start,end,game.board[sizeToBoard[size]] )
-    game.makeMove(move, sizeToBoard[size] )
+    game.makeMove(move, sizeToBoard[size])
+    moveMade = True
 
 running = True
 load_images()
 firstClick = ()
 secondClick = ()
 
-sizeToBoard = {8: 0, 10: 1, 12: 2, 14:3, 16:4}
+sizeToBoard = {8: 0, 10: 1, 12: 2, 14: 3, 16: 4}
 
 game = ChessEngine.GameState()
+validMoves = game.allValidMoves(size)
 
 while running:
 
@@ -123,10 +126,13 @@ while running:
             if ((location[0] > (screenx - 40 - 150)) and (location[0] < (screenx - 40))) and ((location[1] > screeny/2) and (location[1] < (screeny/2)+50)):
                 print("Undo")
                 game.undoMove(sizeToBoard[size])
-
-
+                moveMade = True
 
     screen.fill((255, 255, 255))
+
+    if moveMade:
+        validMoves = game.allValidMoves(size)
+        moveMade = False
 
     draw_squares(screen, size)
     pygame.draw.rect(screen, ORANGE,((screenx - 40 - 150,screeny/2),(150,50)))
