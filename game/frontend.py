@@ -5,7 +5,10 @@ import ChessEngine
 pygame.init()
 pygame.font.init()
 font = pygame.freetype.SysFont("SansitaOne.tff",25)
-screen = pygame.display.set_mode([1000, 1000])
+size = 10
+screenx = (size*50)+80 + 200
+screeny = (size*50)+80
+screen = pygame.display.set_mode([screenx, screeny])
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -86,11 +89,9 @@ def display_board(screen):
 
 def move_piece(start, end):
     print("Move", start, end)
-    move = ChessEngine.Move(start,end,game.board[0])
+    move = ChessEngine.Move(start,end,game.board[sizeToBoard[size]] )
     game.makeMove(move, sizeToBoard[size] )
 
-
-size = 8
 running = True
 load_images()
 firstClick = ()
@@ -117,12 +118,19 @@ while running:
                 secondClick = location
                 print("Second:", coords_to_notation(secondClick))
                 move_piece(coords_to_notation(firstClick), coords_to_notation(secondClick))
-                print(game.board[0])
+                #print(game.board[0])
                 firstClick = ()
+            if ((location[0] > (screenx - 40 - 150)) and (location[0] < (screenx - 40))) and ((location[1] > screeny/2) and (location[1] < (screeny/2)+50)):
+                print("Undo")
+                game.undoMove(sizeToBoard[size])
+
+
 
     screen.fill((255, 255, 255))
 
     draw_squares(screen, size)
+    pygame.draw.rect(screen, ORANGE,((screenx - 40 - 150,screeny/2),(150,50)))
+    font.render_to(screen, (screenx - 40 - 150 + 40,(screeny/2) + 20) , "Undo")
     draw_coords(screen, font, size)
     display_board(screen)
     pygame.display.flip()
