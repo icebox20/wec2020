@@ -89,32 +89,42 @@ class GameState():
         self.moveLog.append(move)  # log the move
         self.whiteToMove = not self.whiteToMove  # swap players
 
-    def undoMove(self):
+    def undoMove(self, boardNum):
         if len(self.moveLog) != 0:
             move = self.moveLog.pop()
-            self.board[move.startRow][move.startCol] = move.pieceMoved
-            self.board[move.endRow][move.endCol] = move.pieceCaptured
+            self.board[boardNum][move.startRow][move.startCol] = move.pieceMoved
+            self.board[boardNum][move.endRow][move.endCol] = move.pieceCaptured
             self.whiteToMove = not self.whiteToMove
 
-    # self.moveLibrary = {"pawn": self.getPawnMove, "vanguard": self.getVanguardMove,
-    #                     "rook": self.getRookMove, "knight": self.getKnightMove,
-    #                     "bishop": self.getBishopMove, "queen": self.getQueenMove, "king": self.getKingMove}
+    def allValidMoves(self):
+        return self.allPossibleMoves()
 
-    def getValidMoves(self):
-        return self.getPossibleMoves()
-
-    def getPossibleMoves(self, boardNum):
+    def allPossibleMoves(self, boardNum):
         moves_list = []
         for y in range(len(self.board[boardNum])):
             for x in range(len(self.board[boardNum][y])):
                 userTurn = self.board[boardNum][y][x][0]
-                if (userTurn == "white" and self.whiteToMove) or (userTurn == "black" and self.blackToMove):
+                if (userTurn == "w" and self.whiteToMove) or (userTurn == "b" and not self.whiteToMove):
                     userPiece = self.board[boardNum][y][x][1]
-                    self.moveLibrary[userPiece](y, x, moves_list)
+                    if userPiece == "P":
+                        self.PawnMove(boardNum, y, x, moves_list)
+                    elif userPiece == "R":
+
+                    elif userPiece == "N":
+
+                    elif userPiece == "B":
+
+                    elif userPiece == "Q":
+
+                    elif userPiece == "K":
+
+                    else:
+
 
         return moves_list
 
-    def getPawnMove(self, boardNum, y, x, moves_list):
+
+    def PawnMove(self, boardNum, y, x, moves_list):
         # Regular movement of White pawn
         boardSize = [6, 8, 10, 12, 14]
         if self.whiteToMove:
