@@ -7,10 +7,10 @@ from select import render_box
 
 pygame.init()
 pygame.font.init()
-font = pygame.freetype.SysFont("SansitaOne.tff",25)
+font = pygame.freetype.SysFont("SansitaOne.tff", 25)
 size = 10
-screenx = (size*50)+80 + 200
-screeny = (size*50)+80
+screenx = (size * 50) + 80 + 200
+screeny = (size * 50) + 80
 screen = pygame.display.set_mode([screenx, screeny])
 
 BLACK = (0, 0, 0)
@@ -35,7 +35,7 @@ def load_images():
 
 
 def coords_to_notation(coords):
-    return int(((coords[1] - 50) /(50))), int(((coords[0] - 50) /(50)))
+    return int(((coords[1] - 50) / (50))), int(((coords[0] - 50) / (50)))
 
 
 def notation_to_coords(notation):
@@ -87,17 +87,18 @@ def display_board(screen):
             if piece == "--":
                 pass
             else:
-                screen.blit(IMAGES[piece], pygame.Rect(notation_to_coords(size - (j)), notation_to_coords(size - (i)), 50, 50))
+                screen.blit(IMAGES[piece],
+                            pygame.Rect(notation_to_coords(size - (j)), notation_to_coords(size - (i)), 50, 50))
 
 
 def move_piece(start, end):
     global moveMade
     global validMoves
     print("Move", start, end)
-    move = ChessEngine.Move(start,end,game.board[sizeToBoard[size]])
+    move = ChessEngine.Move(start, end, game.board[sizeToBoard[size]])
     validMoves = game.allValidMoves(sizeToBoard[size])
-    #for i in range(10):
-        #print(validMoves[i].startRow, validMoves[i].startCol, "|", validMoves[i].endRow, validMoves[i].endCol)
+    # for i in range(10):
+    # print(validMoves[i].startRow, validMoves[i].startCol, "|", validMoves[i].endRow, validMoves[i].endCol)
     print(move)
     print(validMoves[0])
     for k, move2 in enumerate(validMoves):
@@ -114,25 +115,27 @@ def move_piece(start, end):
         for i in range(1):
             print(validMoves[i].startRow, validMoves[i].startCol, "|", validMoves[i].endRow, validMoves[i].endCol)
         moveMade = False
-    
+
+
 running = True
 load_images()
 firstClick = ()
 secondClick = ()
 
-sizeToBoard = {8: 0, 10: 1, 12: 2, 14:3, 16:4}
+sizeToBoard = {8: 0, 10: 1, 12: 2, 14: 3, 16: 4}
 
 game = ChessEngine.GameState()
 
 running, size = ask_for_size(screen, font, pygame)
-screenx = (size*50)+80 + 200
-screeny = (size*50)+80
+screenx = (size * 50) + 80 + 200
+screeny = (size * 50) + 80
 screen = pygame.display.set_mode([screenx, screeny])
 
 validMoves = game.allValidMoves(sizeToBoard[size])
 for i in range(10):
-    print(validMoves[i].startRow,validMoves[i].startCol,"|",validMoves[i].endRow,validMoves[i].endCol)
+    print(validMoves[i].startRow, validMoves[i].startCol, "|", validMoves[i].endRow, validMoves[i].endCol)
 moveMade = False
+firstselctor = ()
 
 while running:
 
@@ -144,10 +147,11 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             location = pygame.mouse.get_pos()
             print("click2")
-            #render_box(screen, GREEN, 800, 800)
-            pygame.draw.rect(screen, GREEN, ((400, 400), (100, 100)))
+            # render_box(screen, GREEN, 800, 800)
+            # pygame.draw.rect(screen, GREEN, ((400, 400), (100, 100)))
+            firstselctor = True
             print("Location:", location)
-            if(location[0] > ((size * 50) + 40)) or (location[1] > ((size * 50) + 40)):
+            if (location[0] > ((size * 50) + 40)) or (location[1] > ((size * 50) + 40)):
                 pass
             elif firstClick == ():
                 firstClick = location
@@ -155,23 +159,28 @@ while running:
             else:
                 secondClick = location
                 print("Second:", coords_to_notation(secondClick))
-                if(firstClick != secondClick):
+                if (firstClick != secondClick):
                     move_piece(coords_to_notation(firstClick), coords_to_notation(secondClick))
                 else:
                     print("Same")
-                #print(game.board[0])
+                # print(game.board[0])
                 firstClick = ()
-            if ((location[0] > (screenx - 40 - 150)) and (location[0] < (screenx - 40))) and ((location[1] > screeny/2) and (location[1] < (screeny/2)+50)):
+                firstselctor = False
+            if ((location[0] > (screenx - 40 - 150)) and (location[0] < (screenx - 40))) and (
+                    (location[1] > screeny / 2) and (location[1] < (screeny / 2) + 50)):
                 print("Undo")
                 game.undoMove(sizeToBoard[size])
                 moveMade = True
 
 
-
     draw_squares(screen, size)
     display_board(screen)
-    render_button(screen, font, ORANGE, screenx - 40 - 150, 100,  "White" if game.whiteToMove else "Black")
-    render_button(screen, font, ORANGE, screenx - 40 - 150, (screeny/2), "Undo")
+    if firstselctor:
+        print("box")
+        render_box(screen, GREEN, (coords_to_notation(firstClick)[1])*50 + 40, coords_to_notation(firstClick)[0]*50 + 40)
+        #pygame.draw.rect(screen, GREEN, ((location[0], location[1]), (50, 50)), 0)
+    render_button(screen, font, ORANGE, screenx - 40 - 150, 100, "White" if game.whiteToMove else "Black")
+    render_button(screen, font, ORANGE, screenx - 40 - 150, (screeny / 2), "Undo")
     draw_coords(screen, font, size)
 
     pygame.display.flip()
