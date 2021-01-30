@@ -29,7 +29,7 @@ def load_images():
 
 
 def coords_to_notation(coords):
-    return int(((coords[0] - 50) /(50))), int(size - ((coords[1] - 50) /(50)))
+    return int(((coords[1] - 50) /(50))), int(((coords[0] - 50) /(50)))
 
 
 def notation_to_coords(notation):
@@ -81,12 +81,13 @@ def display_board(screen):
             if piece == "--":
                 pass
             else:
-                screen.blit(IMAGES[piece], pygame.Rect(notation_to_coords(j + 1), notation_to_coords(i + 1), 50, 50))
+                screen.blit(IMAGES[piece], pygame.Rect(notation_to_coords(size - (j)), notation_to_coords(size - (i)), 50, 50))
 
 
 def move_piece(start, end):
     print("Move", start, end)
-    ChessEngine.Move(start,end,game.board[0])
+    move = ChessEngine.Move(start,end,game.board[0])
+    game.makeMove(move)
 
 
 size = 8
@@ -95,7 +96,7 @@ load_images()
 firstClick = ()
 secondClick = ()
 
-sizeToBoard = {8: 0, 10: 1, 12: 2}
+sizeToBoard = {8: 0, 10: 1, 12: 2, 14:3, 16:4}
 
 game = ChessEngine.GameState()
 
@@ -116,6 +117,7 @@ while running:
                 secondClick = location
                 print("Second:", coords_to_notation(secondClick))
                 move_piece(coords_to_notation(firstClick), coords_to_notation(secondClick))
+                print(game.board[0])
                 firstClick = ()
 
     screen.fill((255, 255, 255))
