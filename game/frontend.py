@@ -90,10 +90,18 @@ def display_board(screen):
 
 
 def move_piece(start, end):
+    global moveMade
+    global validMoves
     print("Move", start, end)
-    move = ChessEngine.Move(start,end,game.board[sizeToBoard[size]] )
-    game.makeMove(move, sizeToBoard[size] )
-
+    move = ChessEngine.Move(start,end,game.board[sizeToBoard[size]])
+    if move in validMoves:
+        moveMade = True
+    game.makeMove(move, sizeToBoard[size])
+    validMoves = game.allValidMoves(sizeToBoard[size])
+    if moveMade:
+        validMoves = game.allValidMoves(sizeToBoard[size])
+        moveMade = False
+    
 running = True
 load_images()
 firstClick = ()
@@ -102,8 +110,10 @@ secondClick = ()
 sizeToBoard = {8: 0, 10: 1, 12: 2, 14:3, 16:4}
 
 game = ChessEngine.GameState()
+validMoves = game.allValidMoves(sizeToBoard[size])
+moveMade = False
 
-running , size = ask_for_size(screen, font, pygame)
+running, size = ask_for_size(screen, font, pygame)
 screenx = (size*50)+80 + 200
 screeny = (size*50)+80
 screen = pygame.display.set_mode([screenx, screeny])
@@ -134,7 +144,7 @@ while running:
     screen.fill((255, 255, 255))
 
     draw_squares(screen, size)
-    render_button(screen,font,ORANGE,screenx - 40 - 150,(screeny/2), "Undo")
+    render_button(screen, font, ORANGE, screenx - 40 - 150, (screeny/2), "Undo")
     draw_coords(screen, font, size)
     display_board(screen)
     pygame.display.flip()
