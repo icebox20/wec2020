@@ -155,7 +155,10 @@ while running:
             else:
                 secondClick = location
                 print("Second:", coords_to_notation(secondClick))
-                move_piece(coords_to_notation(firstClick), coords_to_notation(secondClick))
+                if(firstClick != secondClick):
+                    move_piece(coords_to_notation(firstClick), coords_to_notation(secondClick))
+                else:
+                    print("Same")
                 #print(game.board[0])
                 firstClick = ()
             if ((location[0] > (screenx - 40 - 150)) and (location[0] < (screenx - 40))) and ((location[1] > screeny/2) and (location[1] < (screeny/2)+50)):
@@ -167,6 +170,7 @@ while running:
 
     draw_squares(screen, size)
     display_board(screen)
+    render_button(screen, font, ORANGE, screenx - 40 - 150, 100,  "White" if game.whiteToMove else "Black")
     render_button(screen, font, ORANGE, screenx - 40 - 150, (screeny/2), "Undo")
     draw_coords(screen, font, size)
 
