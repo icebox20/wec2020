@@ -83,9 +83,9 @@ class GameState():
         self.moveLog = []
 
     # doesn't work for castling, pawn promotion, and en-passant
-    def makeMove(self, move):
-        self.board[move.startRow][move.startCol] = "--"
-        self.board[move.endRow][move.endCol] = move.pieceMoved
+    def makeMove(self, move, boardNum):
+        self.board[boardNum][move.startRow][move.startCol] = "--"
+        self.board[boardNum][move.endRow][move.endCol] = move.pieceMoved
         self.moveLog.append(move)  # log the move
         self.whiteToMove = not self.whiteToMove  # swap players
 
