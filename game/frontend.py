@@ -1,6 +1,8 @@
 import pygame
 import pygame.freetype
 import ChessEngine
+from button import render_button
+from prompt import ask_for_size
 
 pygame.init()
 pygame.font.init()
@@ -101,6 +103,11 @@ sizeToBoard = {8: 0, 10: 1, 12: 2, 14:3, 16:4}
 
 game = ChessEngine.GameState()
 
+running , size = ask_for_size(screen, font, pygame)
+screenx = (size*50)+80 + 200
+screeny = (size*50)+80
+screen = pygame.display.set_mode([screenx, screeny])
+
 while running:
 
     for event in pygame.event.get():
@@ -124,13 +131,10 @@ while running:
                 print("Undo")
                 game.undoMove(sizeToBoard[size])
 
-
-
     screen.fill((255, 255, 255))
 
     draw_squares(screen, size)
-    pygame.draw.rect(screen, ORANGE,((screenx - 40 - 150,screeny/2),(150,50)))
-    font.render_to(screen, (screenx - 40 - 150 + 40,(screeny/2) + 20) , "Undo")
+    render_button(screen,font,ORANGE,screenx - 40 - 150,(screeny/2), "Undo")
     draw_coords(screen, font, size)
     display_board(screen)
     pygame.display.flip()
