@@ -1,7 +1,6 @@
 """
 Responsible for storing information about the current state of the chess game
 """
-import self as self
 
 
 class GameState():
@@ -97,9 +96,9 @@ class GameState():
             self.board[move.endRow][move.endCol] = move.pieceCaptured
             self.whiteToMove = not self.whiteToMove
 
-    self.moveLibrary = {"pawn": self.getPawnMove, "vanguard": self.getVanguardMove,
-                        "rook": self.getRookMove, "knight": self.getKnightMove,
-                        "bishop": self.getBishopMove, "queen": self.getQueenMove, "king": self.getKingMove}
+    # self.moveLibrary = {"pawn": self.getPawnMove, "vanguard": self.getVanguardMove,
+    #                     "rook": self.getRookMove, "knight": self.getKnightMove,
+    #                     "bishop": self.getBishopMove, "queen": self.getQueenMove, "king": self.getKingMove}
 
     def getValidMoves(self):
         return self.getPossibleMoves()
