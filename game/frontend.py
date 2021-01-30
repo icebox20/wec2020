@@ -85,8 +85,8 @@ def display_board(screen):
 
 
 def move_piece(start, end):
-    print("Move")
-    ChessEngine.Move((2,2),(3,3),game.board[0])
+    print("Move", start, end)
+    ChessEngine.Move(start,end,game.board[0])
 
 
 size = 8
@@ -106,15 +106,17 @@ while running:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
             location = pygame.mouse.get_pos()
-            print(location)
-            print("Location:", coords_to_notation(location))
-            if firstClick == ():
+            print("Location:", location)
+            if(location[0] > ((size * 50) + 40)) or (location[1] > ((size * 50) + 40)):
+                pass
+            elif firstClick == ():
                 firstClick = location
-
+                print("Frist:", coords_to_notation(firstClick))
             else:
                 secondClick = location
+                print("Second:", coords_to_notation(secondClick))
+                move_piece(coords_to_notation(firstClick), coords_to_notation(secondClick))
                 firstClick = ()
-                move_piece(firstClick, secondClick)
 
     screen.fill((255, 255, 255))
 
