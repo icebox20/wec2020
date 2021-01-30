@@ -3,6 +3,7 @@ import pygame.freetype
 import ChessEngine
 from button import render_button
 from prompt import ask_for_size
+from select import render_box
 
 pygame.init()
 pygame.font.init()
@@ -94,10 +95,19 @@ def move_piece(start, end):
     global validMoves
     print("Move", start, end)
     move = ChessEngine.Move(start,end,game.board[sizeToBoard[size]])
-    if move in validMoves:
-        moveMade = True
-    game.makeMove(move, sizeToBoard[size])
     validMoves = game.allValidMoves(sizeToBoard[size])
+    #for i in range(10):
+        #print(validMoves[i].startRow, validMoves[i].startCol, "|", validMoves[i].endRow, validMoves[i].endCol)
+    print(move)
+    print(validMoves[0])
+    for k, move2 in enumerate(validMoves):
+        if move2.startRow == move.startRow and move2.startCol == move.startCol and move2.endRow == move.endRow and move2.endCol == move.endCol:
+            print("valid")
+            moveMade = True
+            game.makeMove(move, sizeToBoard[size])
+        else:
+            print("invalid")
+
     if moveMade:
         validMoves = game.allValidMoves(sizeToBoard[size])
         moveMade = False
@@ -117,15 +127,22 @@ screeny = (size*50)+80
 screen = pygame.display.set_mode([screenx, screeny])
 
 validMoves = game.allValidMoves(sizeToBoard[size])
+for i in range(10):
+    print(validMoves[i].startRow,validMoves[i].startCol,"|",validMoves[i].endRow,validMoves[i].endCol)
 moveMade = False
 
 while running:
+
+    screen.fill((255, 255, 255))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
             location = pygame.mouse.get_pos()
+            print("click2")
+            #render_box(screen, GREEN, 800, 800)
+            pygame.draw.rect(screen, GREEN, ((400, 400), (100, 100)))
             print("Location:", location)
             if(location[0] > ((size * 50) + 40)) or (location[1] > ((size * 50) + 40)):
                 pass
@@ -143,12 +160,13 @@ while running:
                 game.undoMove(sizeToBoard[size])
                 moveMade = True
 
-    screen.fill((255, 255, 255))
+
 
     draw_squares(screen, size)
+    display_board(screen)
     render_button(screen, font, ORANGE, screenx - 40 - 150, (screeny/2), "Undo")
     draw_coords(screen, font, size)
-    display_board(screen)
+
     pygame.display.flip()
 
 # Done! Time to quit.
