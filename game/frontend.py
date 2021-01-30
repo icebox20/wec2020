@@ -1,6 +1,8 @@
 import pygame
 import pygame.freetype
 import ChessEngine
+from button import render_button
+from prompt import ask_for_size
 
 pygame.init()
 pygame.font.init()
@@ -23,6 +25,7 @@ ORANGE = (255, 165, 0)
 #           0     1     2    3     4     5     6      7    8     9     10    11    12    13
 pieces = ['wP', 'wB', 'wR', 'wN', 'wQ', 'wK', 'wV', 'bP', 'bB', 'bR', 'bN', 'bQ', 'bK', 'bV']
 IMAGES = {}
+
 
 def load_images():
     for piece in pieces:
@@ -85,24 +88,25 @@ def display_board(screen):
             else:
                 screen.blit(IMAGES[piece], pygame.Rect(notation_to_coords(size - (j)), notation_to_coords(size - (i)), 50, 50))
 
-moveMade = False    # flag for when move is made
 
 def move_piece(start, end):
-    global moveMade
     print("Move", start, end)
     move = ChessEngine.Move(start,end,game.board[sizeToBoard[size]] )
-    game.makeMove(move, sizeToBoard[size])
-    moveMade = True
+    game.makeMove(move, sizeToBoard[size] )
 
 running = True
 load_images()
 firstClick = ()
 secondClick = ()
 
-sizeToBoard = {8: 0, 10: 1, 12: 2, 14: 3, 16: 4}
+sizeToBoard = {8: 0, 10: 1, 12: 2, 14:3, 16:4}
 
 game = ChessEngine.GameState()
-validMoves = game.allValidMoves(size)
+
+running , size = ask_for_size(screen, font, pygame)
+screenx = (size*50)+80 + 200
+screeny = (size*50)+80
+screen = pygame.display.set_mode([screenx, screeny])
 
 while running:
 
@@ -126,17 +130,11 @@ while running:
             if ((location[0] > (screenx - 40 - 150)) and (location[0] < (screenx - 40))) and ((location[1] > screeny/2) and (location[1] < (screeny/2)+50)):
                 print("Undo")
                 game.undoMove(sizeToBoard[size])
-                moveMade = True
 
     screen.fill((255, 255, 255))
 
-    if moveMade:
-        validMoves = game.allValidMoves(size)
-        moveMade = False
-
     draw_squares(screen, size)
-    pygame.draw.rect(screen, ORANGE,((screenx - 40 - 150,screeny/2),(150,50)))
-    font.render_to(screen, (screenx - 40 - 150 + 40,(screeny/2) + 20) , "Undo")
+    render_button(screen,font,ORANGE,screenx - 40 - 150,(screeny/2), "Undo")
     draw_coords(screen, font, size)
     display_board(screen)
     pygame.display.flip()
