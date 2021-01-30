@@ -4,7 +4,7 @@ import ChessEngine
 
 pygame.init()
 pygame.font.init()
-font = pygame.freetype.Font("Roboto-Regular.ttf", 24)
+font = pygame.freetype.SysFont("SansitaOne.tff",25)
 screen = pygame.display.set_mode([1000, 1000])
 
 BLACK = (0, 0, 0)
