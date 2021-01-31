@@ -120,7 +120,7 @@ class GameState():
                     elif userPiece == "K":
                         self.KingMove(boardNum, y, x, moves_list)
                     else:
-                        self.VangardMove(boardNum, y, x, moves_list)
+                        self.VanguardMove(boardNum, y, x, moves_list)
         return moves_list
 
     def PawnMove(self, boardNum, y, x, moves_list):
@@ -211,7 +211,7 @@ class GameState():
             oppositeColour = "w"
 
         for i in direction:
-            for j in range(2, 4):
+            for j in range(2, 5):
                 RowEnd = y + i[0] * j
                 ColumnEnd = x + i[1] * j
                 if 0 <= RowEnd < boardSize[boardNum] and 0 <= ColumnEnd < boardSize[boardNum]:
@@ -233,18 +233,31 @@ class GameState():
             self.BishopMove(boardNum, y, x, moves_list)
             # turnQueenMoved = len(moves_list)
 
-
     def KingMove(self, boardNum, y, x, moves_list):
         boardSize = [6, 8, 10, 12, 14]
         kingMoves = ((-1, -1), (-1, 0), (-1, -1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1))
         allyColor = "w" if self.whiteToMove else "b"
-        for i in range(boardSize[boardNum]):
+        for i in range(8):
             endY = y + kingMoves[i][0]
             endX = x + kingMoves[i][1]
             if 0 <= endY < boardSize[boardNum] and 0 <= endX < boardSize[boardNum]:
                 endPiece = self.board[boardNum][endY][endX]
                 if endPiece[0] != allyColor:
                     moves_list.append(Move((y,x), (endY, endX), self.board[boardNum]))
+
+    def VanguardMove(self,boardNum, y, x, moves_list):
+        boardSize = [6, 8, 10, 12, 14]
+        vanguardMoves = ((-2, -1), (-2, 1), (-1, -2), (-1, 2), (1, -2), (1, 2), (2, -1), (2, 1))
+        allyColor = "w" if self.whiteToMove else "b"
+        for m in vanguardMoves:
+            for i in range(-boardSize[boardNum], boardSize[boardNum]):
+                endY = y + m[0] + i
+                endX = x + m[1] + i
+                print((endY,endX))
+                if 0 <= endY < boardSize[boardNum] and 0 <= endX < boardSize[boardNum]:
+                    endPiece = self.board[boardNum][endY][endX]
+                    if endPiece[0] != allyColor:
+                        moves_list.append(Move((y, x), (endY, endX), self.board[boardNum]))
 
 class Move():
     # Chess notation

@@ -176,7 +176,7 @@ while running:
     draw_squares(screen, size)
     display_board(screen)
     if firstselctor:
-        print("box")
+        # print("box")
         render_box(screen, GREEN, (coords_to_notation(firstClick)[1])*50 + 40, coords_to_notation(firstClick)[0]*50 + 40)
         #pygame.draw.rect(screen, GREEN, ((location[0], location[1]), (50, 50)), 0)
     render_button(screen, font, GREY, screenx - 40 - 150, 100, "White" if game.whiteToMove else "Black")
