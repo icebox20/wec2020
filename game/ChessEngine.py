@@ -95,6 +95,7 @@ class GameState():
             self.board[boardNum][move.startRow][move.startCol] = move.pieceMoved
             self.board[boardNum][move.endRow][move.endCol] = move.pieceCaptured
             self.whiteToMove = not self.whiteToMove
+            print(self.whiteToMove)
 
     def allValidMoves(self, boardNum):
         return self.allPossibleMoves(boardNum)
@@ -128,32 +129,32 @@ class GameState():
         if self.whiteToMove:
             if self.board[boardNum][y - 1][x] == "--":
                 moves_list.append(Move((y, x), (y - 1, x), self.board[boardNum]))
-                if y == boardSize[boardNum] and self.board[boardNum][y-2][x] == "--":
-                    moves_list.append(Move((y, x), (y - 2, x), self.board[boardNum]))
+                # if y == boardSize[boardNum] and self.board[boardNum][y-2][x] == "--":
+                moves_list.append(Move((y, x), (y - 2, x), self.board[boardNum]))
+                moves_list.append(Move((y, x), (y - 3, x), self.board[boardNum]))
             # capturing piece to left
             if (x - 1) >= 0:
                 if self.board[boardNum][y - 1][x - 1][0] == "b":
                     moves_list.append(Move((y, x), (y - 1, x - 1), self.board[boardNum]))
             # capturing piece to right
-            if (x + 1) <= boardSize[boardNum]-1:
+            if (x + 1) <= boardSize[boardNum]+1:
                 if self.board[boardNum][y - 1][x + 1][0] == "b":
-                    moves_list.append(Move((y, x), (y + 1, x + 1), self.board[boardNum]))
+                    moves_list.append(Move((y, x), (y - 1, x + 1), self.board[boardNum]))
         # Regular movement of Black pawn
         else:
             if self.board[boardNum][y + 1][x] == "--":
                 moves_list.append(Move((y, x), (y + 1, x), self.board[boardNum]))
-                if y == 2 and self.board[boardNum][y+2][x] == "--":
-                    moves_list.append(Move((y, x), (y + 2, x), self.board[boardNum]))
+                # if y == 1 and self.board[boardNum][y+2][x] == "--":
+                moves_list.append(Move((y, x), (y + 2, x), self.board[boardNum]))
+                moves_list.append(Move((y, x), (y + 3, x), self.board[boardNum]))
             # capturing piece to left
             if (x + 1) >= 0:
-                print(x)
-                print(y)
                 if self.board[boardNum][y + 1][x - 1][0] == "w":
-                    moves_list.append(Move((y, x), (y + 1, x + 1), self.board[boardNum]))
+                    moves_list.append(Move((y, x), (y + 1, x - 1), self.board[boardNum]))
             # capturing piece to right
             if (x - 1) <= boardSize[boardNum]-1:
                 if self.board[boardNum][y + 1][x + 1][0] == "w":
-                    moves_list.append(Move((y, x), (y - 1, x - 1), self.board[boardNum]))
+                    moves_list.append(Move((y, x), (y + 1, x + 1), self.board[boardNum]))
 
     def RookMove(self, boardNum, y, x, moves_list):
         direction = ((-1, 0), (0, -1), (1, 0), (0, 1))
@@ -205,33 +206,29 @@ class GameState():
                 else:
                     break
 
-    def KnightMove(self, boardNum, r, c, moves_list):
-        directions = ((0, -4), (0, -3), (0, -2), (0, 2), (0, 3), (0, 4),
-                      (-4, 0), (-3, 0), (-2, 0), (2, 0), (3, 0), (4, 0),
-                      (-4, -4), (-3, -3), (-2, -2), (2, 2), (3, 3), (4, 4),
-                      (-4, 4), (-3, 3), (-2, 2), (-2, 2), (-3, 3), (-4, 4))
-
+    def KnightMove(self, boardNum, y, x, moves_list):
+        direction = ((-1, 0), (0, -1), (1, 0), (0, 1), (-1, -1), (-1, 1), (1, -1), (1, 1))
+        boardSize = [8, 10, 12, 14, 16]
         if self.whiteToMove:
-            enemyColor = 'b'
+            oppositeColour = "b"
         else:
-            enemyColor = 'w'
+            oppositeColour = "w"
 
-        boardSize = [6, 8, 10, 12, 14]
-
-        for d in directions:
-            endRow = r + d[0]
-            endCol = r + d[1]
-
-            if 0 <= endRow < boardSize[boardNum] + 2 and 0 <= endCol < boardSize[boardNum] + 2:
-                endPiece = self.board[boardNum][endRow][endCol]
-                if endPiece == "--":
-                    moves_list.append(Move((r, c), (endRow, endCol), self.board[boardNum]))
-                elif endPiece[0] == enemyColor:
-                    moves_list.append(Move((r, c), (endRow, endCol), self.board[boardNum]))
+        for i in direction:
+            for j in range(2, 4):
+                RowEnd = y + i[0] * j
+                ColumnEnd = x + i[1] * j
+                if 0 <= RowEnd < boardSize[boardNum] and 0 <= ColumnEnd < boardSize[boardNum]:
+                    Limit = self.board[boardNum][RowEnd][ColumnEnd]
+                    if Limit == "--":
+                        moves_list.append(Move((y, x), (RowEnd, ColumnEnd), self.board[boardNum]))
+                    elif Limit[0] == oppositeColour:
+                        moves_list.append(Move((y, x), (RowEnd, ColumnEnd), self.board[boardNum]))
+                        break
+                    else:
+                        break
                 else:
                     break
-            else:
-                break
 
     def QueenMove(self, boardNum, y, x, moves_list):
         # turnQueenMoved = 0
