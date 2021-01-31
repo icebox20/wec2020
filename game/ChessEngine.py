@@ -127,32 +127,28 @@ class GameState():
         # Regular movement of White pawn
         boardSize = [6, 8, 10, 12, 14]
         if self.whiteToMove:
-            if self.board[boardNum][y - 1][x] == "--":
-                moves_list.append(Move((y, x), (y - 1, x), self.board[boardNum]))
-                # if y == boardSize[boardNum] and self.board[boardNum][y-2][x] == "--":
-                moves_list.append(Move((y, x), (y - 2, x), self.board[boardNum]))
-                moves_list.append(Move((y, x), (y - 3, x), self.board[boardNum]))
+            for i in range(1,4):
+                if self.board[boardNum][y - i][x] == "--":
+                    moves_list.append(Move((y, x), (y - i, x), self.board[boardNum]))
             # capturing piece to left
-            if (x - 1) >= 0:
+            if (x - 1) >= 0 and self.board[boardNum][y - 1][x][0] == "b":
                 if self.board[boardNum][y - 1][x - 1][0] == "b":
                     moves_list.append(Move((y, x), (y - 1, x - 1), self.board[boardNum]))
             # capturing piece to right
-            if (x + 1) <= boardSize[boardNum]+1:
+            if (x + 1) <= boardSize[boardNum]+1 and self.board[boardNum][y - 1][x][0] == "b":
                 if self.board[boardNum][y - 1][x + 1][0] == "b":
                     moves_list.append(Move((y, x), (y - 1, x + 1), self.board[boardNum]))
         # Regular movement of Black pawn
         else:
-            if self.board[boardNum][y + 1][x] == "--":
-                moves_list.append(Move((y, x), (y + 1, x), self.board[boardNum]))
-                # if y == 1 and self.board[boardNum][y+2][x] == "--":
-                moves_list.append(Move((y, x), (y + 2, x), self.board[boardNum]))
-                moves_list.append(Move((y, x), (y + 3, x), self.board[boardNum]))
+            for i in range(1, 4):
+                if self.board[boardNum][y + i][x] == "--":
+                    moves_list.append(Move((y, x), (y + i, x), self.board[boardNum]))
             # capturing piece to left
-            if (x + 1) >= 0:
+            if (x + 1) >= 0 and self.board[boardNum][y + 1][x][0] == "w":
                 if self.board[boardNum][y + 1][x - 1][0] == "w":
                     moves_list.append(Move((y, x), (y + 1, x - 1), self.board[boardNum]))
             # capturing piece to right
-            if (x - 1) <= boardSize[boardNum]-1:
+            if (x - 1) <= boardSize[boardNum]-1 and self.board[boardNum][y + 1][x][0] == "w":
                 if self.board[boardNum][y + 1][x + 1][0] == "w":
                     moves_list.append(Move((y, x), (y + 1, x + 1), self.board[boardNum]))
 
