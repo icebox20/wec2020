@@ -8,15 +8,24 @@ The program prioritizes certain tasks depending on their Due Date & Due Time.
 The calculated schedule is then imported to Google Calendars automatically upon task input/submission. 
 The user may then refer to the Google calender at any given time.
 
-## Usage
+## Client Usage
 
-1. Using a python IDE, Run `pip install pygame` to install pygame module
+1. Using a python IDE, Run `pip install -r requirements` to install pygame module
 
 2. Download all files present within the game file on github
 
 3. Load the python code within your IDE and run program
 
 4. Once User interface is shown, select size of your desired chess board and begin playing!
+
+## Server Usage
+
+1. Using npm, Run `npm install` to install all the required dependencies 
+
+2. A mongodb database is required for this server to work please add your database to a `.env file` in the main directory
+
+3. Run using `npm run dev`
+
 
 ## Directions for using Program
 	
