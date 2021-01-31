@@ -1,9 +1,10 @@
 import pygame
 import pygame.freetype
 import ChessEngine
-from button import render_button
+from button import render_button, on_click
 from prompt import ask_for_size
 from select import render_box
+import client
 
 pygame.init()
 pygame.font.init()
@@ -106,6 +107,7 @@ def move_piece(start, end):
             print("valid")
             moveMade = True
             game.makeMove(move, sizeToBoard[size])
+            client.put_chess(game.board[sizeToBoard[size]], game.whiteToMove)
         else:
             moveMade = False
             print("invalid")
@@ -115,7 +117,6 @@ def move_piece(start, end):
         for i in range(1):
             print(validMoves[i].startRow, validMoves[i].startCol, "|", validMoves[i].endRow, validMoves[i].endCol)
         moveMade = False
-
 
 running = True
 load_images()
@@ -150,13 +151,16 @@ while running:
             # print("click2")
             # render_box(screen, GREEN, 800, 800)
             # pygame.draw.rect(screen, GREEN, ((400, 400), (100, 100)))
-            firstselctor = True
             # print("Location:", location)
+
+            print("Location:", location)
             if (location[0] > ((size * 50) + 40)) or (location[1] > ((size * 50) + 40)):
                 pass
             elif firstClick == ():
                 firstClick = location
                 # print("Frist:", coords_to_notation(firstClick))
+                firstselctor = True
+                print("Frist:", coords_to_notation(firstClick))
             else:
                 secondClick = location
                 # print("Second:", coords_to_notation(secondClick))
@@ -172,6 +176,13 @@ while running:
                 print("Undo")
                 game.undoMove(sizeToBoard[size])
                 moveMade = True
+            if on_click(event, screenx - 40 - 150, screeny - 100 - 60):
+                print("Refresh")
+                client.put_chess(game.board[sizeToBoard[size]], game.whiteToMove)
+            if on_click(event, screenx - 40 - 150, screeny - 100):
+                print("Join")
+                print()
+                game.board[sizeToBoard[size]], game.whiteToMove = client.get_chess()
 
 
     draw_squares(screen, size)
@@ -181,6 +192,8 @@ while running:
         render_box(screen, GREEN, (coords_to_notation(firstClick)[1])*50 + 40, coords_to_notation(firstClick)[0]*50 + 40)
         #pygame.draw.rect(screen, GREEN, ((location[0], location[1]), (50, 50)), 0)
     render_button(screen, font, GREY, screenx - 40 - 150, 100, "White" if game.whiteToMove else "Black")
+    render_button(screen, font, GREY, screenx - 40 - 150, screeny - 100 - 60, "Send")
+    render_button(screen, font, GREY, screenx - 40 - 150, screeny - 100 , "Refresh")
     render_button(screen, font, ORANGE, screenx - 40 - 150, (screeny / 2), "Undo")
     draw_coords(screen, font, size)
 
