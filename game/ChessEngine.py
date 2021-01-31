@@ -110,7 +110,6 @@ class GameState():
             self.board[boardNum][move.startRow][move.startCol] = move.pieceMoved
             self.board[boardNum][move.endRow][move.endCol] = move.pieceCaptured
             self.whiteToMove = not self.whiteToMove
-            print(self.whiteToMove)
                     #update the king locations
             if move.pieceMoved == "wK":
                 self.whiteKingLocation = (move.startRow, move.startCol)
@@ -276,12 +275,26 @@ class GameState():
                 else:
                     break
 
+    # QueenTurns = [0, 0, 0]
     def QueenMove(self, boardNum, y, x, moves_list):
-        # turnQueenMoved = 0
-        # if turnQueenMoved < len(moves_list) + 5 or turnQueenMoved == 0:
-            self.RookMove(boardNum, y, x, moves_list)
-            self.BishopMove(boardNum, y, x, moves_list)
-            # turnQueenMoved = len(moves_list)
+        # global QueenTurns
+        # QueenNum = 0
+        # if boardNum != 4:
+        #     if QueenTurns[QueenNum] > len(moves_list) + 5 or QueenTurns[QueenNum] == 0:
+        #         self.RookMove(boardNum, y, x, moves_list)
+        #         self.BishopMove(boardNum, y, x, moves_list)
+        #         QueenTurns[QueenNum] = len(moves_list)
+        # else:
+        #     for QueenNum in range(0,3):
+        #         if QueenTurns[QueenNum] > len(moves_list) + 5 or QueenTurns[QueenNum] == 0:
+        #                 self.RookMove(boardNum, y, x, moves_list)
+        #                 self.BishopMove(boardNum, y, x, moves_list)
+        #                 QueenTurns[0] = len(moves_list)
+        #                 break
+        #         else:
+        #             break
+        self.RookMove(boardNum, y, x, moves_list)
+        self.BishopMove(boardNum, y, x, moves_list)
 
     def KingMove(self, boardNum, y, x, moves_list):
         boardSize = [6, 8, 10, 12, 14]
@@ -300,14 +313,18 @@ class GameState():
         vanguardMoves = ((-2, -1), (-2, 1), (-1, -2), (-1, 2), (1, -2), (1, 2), (2, -1), (2, 1))
         allyColor = "w" if self.whiteToMove else "b"
         for m in vanguardMoves:
-            for i in range(-boardSize[boardNum], boardSize[boardNum]):
-                endY = y + m[0] + i
-                endX = x + m[1] + i
-                print((endY,endX))
-                if 0 <= endY < boardSize[boardNum] and 0 <= endX < boardSize[boardNum]:
-                    endPiece = self.board[boardNum][endY][endX]
-                    if endPiece[0] != allyColor:
-                        moves_list.append(Move((y, x), (endY, endX), self.board[boardNum]))
+            for j in range(-boardSize[boardNum]+1, boardSize[boardNum]):
+                endY = y + m[0] + j
+                for i in range(-boardSize[boardNum]+1, boardSize[boardNum]):
+                    endX = x + m[1] + i
+                    if 0 <= endY < boardSize[boardNum] and 0 <= endX < boardSize[boardNum]:
+                        endPiece = self.board[boardNum][endY][endX]
+                        if endPiece[0] != allyColor:
+                            print((endY,endX))
+                            moves_list.append(Move((y, x), (endY, endX), self.board[boardNum]))
+                            break
+                    else:
+                        break
 
 class Move():
     # Chess notation

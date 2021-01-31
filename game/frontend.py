@@ -147,19 +147,19 @@ while running:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
             location = pygame.mouse.get_pos()
-            print("click2")
+            # print("click2")
             # render_box(screen, GREEN, 800, 800)
             # pygame.draw.rect(screen, GREEN, ((400, 400), (100, 100)))
             firstselctor = True
-            print("Location:", location)
+            # print("Location:", location)
             if (location[0] > ((size * 50) + 40)) or (location[1] > ((size * 50) + 40)):
                 pass
             elif firstClick == ():
                 firstClick = location
-                print("Frist:", coords_to_notation(firstClick))
+                # print("Frist:", coords_to_notation(firstClick))
             else:
                 secondClick = location
-                print("Second:", coords_to_notation(secondClick))
+                # print("Second:", coords_to_notation(secondClick))
                 if (firstClick != secondClick):
                     move_piece(coords_to_notation(firstClick), coords_to_notation(secondClick))
                 else:
