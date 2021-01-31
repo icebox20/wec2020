@@ -1,6 +1,5 @@
 'use strict'
 const express = require('express')
-const cors = require('cors');
 const api = require('./api');
 const db = require('./db');
 
@@ -15,7 +14,6 @@ const PORT = 5000;
 // Error handlers
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors());
 
 const logger = (req, res, next) => {
     console.log('hit');
