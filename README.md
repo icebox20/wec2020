@@ -1,16 +1,12 @@
-## Demo
- add a demo gif if you want
- 
+# Cosmetic Chess
+
 ## About
 
-TASP takes the user availability schedule and creates a study plan that helps them prepare for Assignments, Projects, or Exams.
-The program prioritizes certain tasks depending on their Due Date & Due Time.
-The calculated schedule is then imported to Google Calendars automatically upon task input/submission. 
-The user may then refer to the Google calender at any given time.
+Cosmetic chess is a the similar to the chess you may know, but have some very cool changes! 
+Cosmetic chess incorporated the rules of previously known standard chess with a few exciting twists and pieces. This newly modified game can be played with your friends online or in person
+## Usage
 
-## Client Usage
-
-1. Using a python IDE, Run `pip install -r requirements` to install pygame module
+1. Using a python IDE, Run `pip install pygame` to install pygame module
 
 2. Download all files present within the game file on github
 
@@ -25,7 +21,6 @@ The user may then refer to the Google calender at any given time.
 2. A mongodb database is required for this server to work please add your database to a `.env file` in the main directory
 
 3. Run using `npm run dev`
-
 
 ## Directions for using Program
 	
@@ -51,13 +46,11 @@ The user may then refer to the Google calender at any given time.
 
 3. Play with your friends using applications such as teamviewer or play over a video call and use the given letters and numbers to say your moves.
 
-## Bugs
-
 ## Work Flow
 
 	- Project rolled out using agile methodology with 2 sprints
-	- 1st sprint was focused on creating the task class and ui and then understanding how to work with the Google API 
-	- 2nd sprint was focused on integrating all parts and creating a task allocation algorithm 
+    - 1st sprint was focused on creating a normal functional chess game 
+    - 2nd sprint was focused on meeting the project requirements
 
 ## Future Improvements
 
@@ -72,7 +65,3 @@ The user may then refer to the Google calender at any given time.
 Drew a lot of insipiration from this youtube channel in figuring out how to create a chess board and make pieces move.
 * [Chess Board & moves](https://www.youtube.com/channel/UCaEohRz5bPHywGBwmR18Qww)
 * [L shape research for knight and vanguard](https://www.geeksforgeeks.org/count-ways-to-place-knights-moving-in-l-shape-in-chessboard/)
-*
-
-
-
