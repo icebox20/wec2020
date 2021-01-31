@@ -5,7 +5,7 @@ const db = require('./db');
 
 // Create the express app
 const app = express()
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 // Routes and middleware
 // app.use(/* ... */)
