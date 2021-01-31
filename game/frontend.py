@@ -136,6 +136,7 @@ for i in range(10):
     print(validMoves[i].startRow, validMoves[i].startCol, "|", validMoves[i].endRow, validMoves[i].endCol)
 moveMade = False
 firstselctor = ()
+game.kings_locs(sizeToBoard[size])
 
 while running:
 

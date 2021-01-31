@@ -81,6 +81,14 @@ class GameState():
         ]
         self.whiteToMove = True
         self.moveLog = []
+        self.whiteKingLocation = (0, 0)
+        self.blackKingLocation = (0, 0)
+
+    def kings_locs (self, boardNum):
+        self.boardSize = [6, 8, 10, 12, 14]
+        self.whiteKingLocation = (self.boardSize[boardNum]+1, (self.boardSize[boardNum])/2)
+        self.blackKingLocation = (0, ((self.boardSize[boardNum])/2) + 1)
+    
 
     # doesn't work for castling, pawn promotion, and en-passant
     def makeMove(self, move, boardNum):
@@ -88,6 +96,13 @@ class GameState():
         self.board[boardNum][move.endRow][move.endCol] = move.pieceMoved
         self.moveLog.append(move)  # log the move
         self.whiteToMove = not self.whiteToMove  # swap players
+        #update the king locations
+        if move.pieceMoved == "wK":
+            self.whiteKingLocation = (move.endRow, move.endCol)
+        elif move.pieceMoved == "bK":
+            self.blackKingLocation = (move.endRow, move.endCol)
+        
+        
 
     def undoMove(self, boardNum):
         if len(self.moveLog) != 0:
@@ -96,9 +111,44 @@ class GameState():
             self.board[boardNum][move.endRow][move.endCol] = move.pieceCaptured
             self.whiteToMove = not self.whiteToMove
             print(self.whiteToMove)
+                    #update the king locations
+            if move.pieceMoved == "wK":
+                self.whiteKingLocation = (move.startRow, move.startCol)
+            elif move.pieceMoved == "bK":
+                self.blackKingLocation = (move.startRow, move.startCol)
 
     def allValidMoves(self, boardNum):
-        return self.allPossibleMoves(boardNum)
+        
+        moves=self.allPossibleMoves(boardNum)
+        
+        for i in range(len(moves)-1, -1, -1):
+            self.makeMove(moves[i], boardNum)
+            self.whiteToMove = not self.whiteToMove
+            if self.inCheck(boardNum):
+                moves.remove(moves[i])
+            self.whiteToMove =not self.whiteToMove
+            self.undoMove(boardNum)
+        return  moves
+    
+    
+    def inCheck (self, boardNum):
+        if self.whiteToMove:
+            return self.squareUnderAttack(boardNum,self.whiteKingLocation[0], self.whiteKingLocation[1])
+        else:
+            return self.squareUnderAttack(boardNum,self.blackKingLocation[0], self.blackKingLocation[1])
+    
+    def squareUnderAttack(self, boardNum,r, c):
+        self.whiteToMove = not self.whiteToMove
+        oppMoves = self.allPossibleMoves(boardNum)
+        self.whiteToMove = not self.whiteToMove
+        for move in oppMoves:
+            if move.endRow == r and move.endCol == c:
+                return True
+        return False
+               
+        
+        
+        
 
     def allPossibleMoves(self, boardNum):
         moves_list = []
