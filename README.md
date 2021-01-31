@@ -65,3 +65,6 @@ Cosmetic chess incorporated the rules of previously known standard chess with a 
 Drew a lot of insipiration from this youtube channel in figuring out how to create a chess board and make pieces move.
 * [Chess Board & moves](https://www.youtube.com/channel/UCaEohRz5bPHywGBwmR18Qww)
 * [L shape research for knight and vanguard](https://www.geeksforgeeks.org/count-ways-to-place-knights-moving-in-l-shape-in-chessboard/)
+* [Mongodb docs](https://docs.mongodb.com/)
+* [pygame docs](https://www.pygame.org/docs/)
+* [Express](https://expressjs.com/)
