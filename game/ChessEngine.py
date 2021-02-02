@@ -1,7 +1,18 @@
 """
 Responsible for storing information about the current state of the chess game
 """
+def is_valid_square(boardNum,board,x,y):
+    boardSize = [8, 10, 12, 14, 16]
+    if x >= boardSize[boardNum] or y >= boardSize[boardNum] or x < 0 or y < 0:
+        return False
+    if board[y][x] == "--":
+        return True
+    return False 
 
+def is_empty(board, x, y):
+    if board[y][x] == "--" or board[y][x][0] == "":
+        return True
+    return False
 
 class GameState():
     def __init__(self):
@@ -9,30 +20,30 @@ class GameState():
         # First char represents colour of piece 'b' or 'w'
         # Second char represents the type of the piece
         self.board = [[
-            ["bR", "bN", "bB", "bQ", "bK", "bB", "bN", "bR"],
-            ["bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP"],
+            ["bR", "bN", "bB", "bK", "bQ", "bB", "bN", "bR"],
+            ["bV", "bP", "bP", "bP", "bP", "bP", "bP", "bV"],
             ["--", "--", "--", "--", "--", "--", "--", "--"],
             ["--", "--", "--", "--", "--", "--", "--", "--"],
             ["--", "--", "--", "--", "--", "--", "--", "--"],
             ["--", "--", "--", "--", "--", "--", "--", "--"],
-            ["wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP"],
-            ["wR", "wN", "wB", "wK", "wQ", "wB", "wN", "wR"]
+            ["wV", "wP", "wP", "wP", "wP", "wP", "wP", "wV"],
+            ["wR", "wN", "wB", "wQ", "wK", "wB", "wN", "wR"]
         ],
         [
-            ["bR", "bN", "bN", "bB", "bQ", "bK", "bB", "bN", "bN", "bR"],
-            ["bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP"],
+            ["bR", "bN", "bN", "bB", "bK", "bQ", "bB", "bN", "bN", "bR"],
+            ["bV", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bV"],
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
-            ["wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP"],
-            ["wR", "wN", "wN", "wB", "wK", "wQ", "wB", "wN", "wN", "wR"]
+            ["wV", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wV"],
+            ["wR", "wN", "wN", "wB", "wQ", "wK", "wB", "wN", "wN", "wR"]
         ],
         [
             ["bR", "bN", "bN", "bB", "bB", "bQ", "bK", "bB", "bB", "bN", "bN", "bR"],
-            ["bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bV"],
+            ["bV", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bV"],
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
@@ -41,12 +52,12 @@ class GameState():
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
-            ["wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wV"],
+            ["wV", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wV"],
             ["wR", "wN", "wN", "wB", "wB", "wK", "wQ", "wB", "wB", "wN", "wN", "wR"]
         ],
         [
             ["bR", "bR", "bN", "bN", "bB", "bB", "bQ", "bK", "bB", "bB", "bN", "bN", "bR", "bR"],
-            ["bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bV", "bP", "bP"],
+            ["bV", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bV"],
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
@@ -57,12 +68,12 @@ class GameState():
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
-            ["wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wV", "wP", "wP"],
+            ["wV", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wV"],
             ["wR", "wR", "wN", "wN", "wB", "wB", "wK", "wQ", "wB", "wB", "wN", "wN", "wR", "wR"]
         ],
         [
-            ["bR", "bR", "bN", "bN", "bB", "bB", "bQ", "bQ", "bK", "bQ", "bB", "bB", "bN", "bN", "bR", "bR"],
-            ["bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bV", "bV", "bP", "bP", "bP"],
+            ["bR", "bR", "bN", "bN", "bB", "bB", "bQ", "bK", "bQ", "bQ", "bB", "bB", "bN", "bN", "bR", "bR"],
+            ["bV", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bV"],
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
@@ -75,11 +86,12 @@ class GameState():
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
             ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
-            ["wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wV", "wV", "wP", "wP", "wP"],
-            ["wR", "wR", "wN", "wN", "wB", "wB", "wQ", "wK", "wQ", "wQ", "wB", "wB", "wN", "wN", "wR", "wR"]
+            ["wV", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wV"],
+            ["wR", "wR", "wN", "wN", "wB", "wB", "wQ", "wQ", "wK", "wQ", "wB", "wB", "wN", "wN", "wR", "wR"]
         ]
         ]
         self.whiteToMove = True
+        self.vanguardleft = 3
         self.moveLog = []
         self.whiteKingLocation = (0, 0)
         self.blackKingLocation = (0, 0)
@@ -123,20 +135,24 @@ class GameState():
         for i in range(len(moves)-1, -1, -1):
             self.makeMove(moves[i], boardNum)
             self.whiteToMove = not self.whiteToMove
-            if self.inCheck(boardNum):
+            if self.inCheck(boardNum, moves):
+                print("In Check ", "White" if self.whiteToMove else "Black")
                 moves.remove(moves[i])
             self.whiteToMove =not self.whiteToMove
             self.undoMove(boardNum)
+        # for move in moves
+        #     if board[boardNum][move.startRow][move.startCol][1] == "K":
+        #         moves.remove(moves[i])
         return  moves
     
     
-    def inCheck (self, boardNum):
-        if self.whiteToMove:
-            return self.squareUnderAttack(boardNum,self.whiteKingLocation[0], self.whiteKingLocation[1])
-        else:
-            return self.squareUnderAttack(boardNum,self.blackKingLocation[0], self.blackKingLocation[1])
+    def inCheck (self, boardNum, moves):
+        for move in moves:
+            if self.board[boardNum][move.startRow][move.startCol][1] == "K":
+                return True
     
     def squareUnderAttack(self, boardNum,r, c):
+        print("-------------------------------------------------------------------SUA")
         self.whiteToMove = not self.whiteToMove
         oppMoves = self.allPossibleMoves(boardNum)
         self.whiteToMove = not self.whiteToMove
@@ -144,17 +160,16 @@ class GameState():
             if move.endRow == r and move.endCol == c:
                 return True
         return False
-               
-        
-        
         
 
     def allPossibleMoves(self, boardNum):
+        print("-------------------------------------------------------------------")
         moves_list = []
         for y in range(len(self.board[boardNum])):
             for x in range(len(self.board[boardNum][y])):
                 userTurn = self.board[boardNum][y][x][0]
-                if (userTurn == "w" and self.whiteToMove) or (userTurn == "b" and not self.whiteToMove):
+                if (userTurn == "w" and self.whiteToMove) or (userTurn == "b" and (self.whiteToMove == False)):
+
                     userPiece = self.board[boardNum][y][x][1]
                     if userPiece == "P":
                         self.PawnMove(boardNum, y, x, moves_list)
@@ -174,11 +189,15 @@ class GameState():
 
     def PawnMove(self, boardNum, y, x, moves_list):
         # Regular movement of White pawn
+        #print("Check:",y,x )
+        #print("----------------")
         boardSize = [6, 8, 10, 12, 14]
-        if self.whiteToMove:
+        if self.whiteToMove == True: 
+            #print("White")
             for i in range(1,4):
                 if self.board[boardNum][y - i][x] == "--":
                     moves_list.append(Move((y, x), (y - i, x), self.board[boardNum]))
+                    #print("W:",y + i,x, y, x)
             # capturing piece to left
             if (x - 1) >= 0 and self.board[boardNum][y - 1][x][0] == "b":
                 if self.board[boardNum][y - 1][x - 1][0] == "b":
@@ -189,9 +208,13 @@ class GameState():
                     moves_list.append(Move((y, x), (y - 1, x + 1), self.board[boardNum]))
         # Regular movement of Black pawn
         else:
+            #print("Black")
             for i in range(1, 4):
+                if y >= boardSize[boardNum] or x >= boardSize[boardNum] or y < 0 or x < 0:
+                    break
                 if self.board[boardNum][y + i][x] == "--":
                     moves_list.append(Move((y, x), (y + i, x), self.board[boardNum]))
+                    #print("B:",y + i,x, y, x)
             # capturing piece to left
             if (x + 1) >= 0 and self.board[boardNum][y + 1][x][0] == "w":
                 if self.board[boardNum][y + 1][x - 1][0] == "w":
@@ -249,9 +272,22 @@ class GameState():
                     else:
                         break
                 else:
-                    break
+                    break            
 
     def KnightMove(self, boardNum, y, x, moves_list):
+        # striaght =[(-1, 0), (0, -1), (1, 0), (0, 1), (-1, -1), (-1, 1), (1, -1), (1, 1)]
+        # print("Col                 Row")
+        # for i in striaght:
+        #     print(i)
+        #     for j in range(2,5):
+        #         RowEnd = y + i[1] + (j*i[1])
+        #         ColumnEnd =  x + i[0] + (j*i[0])
+        #         if is_valid_square(boardNum, RowEnd, ColumnEnd):
+        #             if is_empty(self.board[boardNum],ColumnEnd,RowEnd):
+        #                 moves_list.append(Move((y, x), (RowEnd, ColumnEnd), self.board[boardNum]))   
+        #                 print(x,"+", i[0],"+", (j*i[0]),"=",x + i[0] + (j*i[0]),"|",y + i[1] + (j*i[1]),"=", y,"+", i[1],"+", (y*i[1]))
+        #                 pass
+            
         direction = ((-1, 0), (0, -1), (1, 0), (0, 1), (-1, -1), (-1, 1), (1, -1), (1, 1))
         boardSize = [8, 10, 12, 14, 16]
         if self.whiteToMove:
@@ -293,6 +329,7 @@ class GameState():
         #                 break
         #         else:
         #             break
+        #print("Validate Queen")
         self.RookMove(boardNum, y, x, moves_list)
         self.BishopMove(boardNum, y, x, moves_list)
 
@@ -320,11 +357,62 @@ class GameState():
                     if 0 <= endY < boardSize[boardNum] and 0 <= endX < boardSize[boardNum]:
                         endPiece = self.board[boardNum][endY][endX]
                         if endPiece[0] != allyColor:
-                            print((endY,endX))
+                            #print((endY,endX))
                             moves_list.append(Move((y, x), (endY, endX), self.board[boardNum]))
                             break
                     else:
                         break
+    def MakeVanguard(self,boardNum, y, x):
+        print("MAKING VAN",y,x)
+        if self.board[boardNum][y][x][1] == "P":
+            if self.board[boardNum][y][x][0] == "w":
+                self.board[boardNum][y][x] = "wV"
+            else:
+                self.board[boardNum][y][x] = "bV"
+            self.whiteToMove = not self.whiteToMove
+
+    def VanguardMoveAlternative(self,boardNum, starty, startx, endy, endx):
+        if self.whiteToMove:
+            if self.board[boardNum][starty][startx][0] == "b":
+                return False
+        else:
+            if self.board[boardNum][starty][startx][0] == "w":
+                return False
+        #print(self.board[boardNum][starty][startx][0] == "b" , (self.whiteToMove))
+        print("Start Row:",starty, "Col:", startx )
+        print("End Row:",endy, "Col:", endx )
+        if starty == endy or startx == endx:
+            return False
+        #-1 if starty > endy else 1
+        print("Path1")
+        path = True
+        for i in range(1,abs(starty-endy)+1):
+            print("Checking Row:",starty + i*(-1 if starty > endy else 1),"Col",startx )
+            if  not is_valid_square(boardNum,self.board[boardNum] ,startx, starty + i*(-1 if starty > endy else 1)):
+                path = False
+                break
+        if path:
+            for i in range(1,abs(startx-endx)):
+                print("Checking Row:",endy,"Col",startx + i*(-1 if startx > endx else 1) )
+                if not is_valid_square(boardNum,self.board[boardNum], startx + i*(-1 if starty > endy else 1), endy ):
+                    path = False
+                    break
+            if path:
+                return True
+        print("Path2")
+        path = True
+        for i in range(1,abs(startx-endx)+1):
+            print("Checking Row:",starty,"Col",startx + i*(-1 if startx > endx else 1) )
+            if not is_valid_square(boardNum,self.board[boardNum], startx + i*(-1 if starty > endy else 1), starty ):
+                path = False
+                break
+        if path:
+            for i in range(1,abs(starty-endy)):
+                print("Checking Row:",starty + i*(-1 if starty > endy else 1),"Col",endx )
+                if not is_valid_square(boardNum,self.board[boardNum], endx, starty + i*(-1 if starty > endy else 1)):
+                    return False
+            return True
+        return False
 
 class Move():
     # Chess notation

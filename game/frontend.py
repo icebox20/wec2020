@@ -100,22 +100,34 @@ def move_piece(start, end):
     validMoves = game.allValidMoves(sizeToBoard[size])
     # for i in range(10):
     # print(validMoves[i].startRow, validMoves[i].startCol, "|", validMoves[i].endRow, validMoves[i].endCol)
-    print(move)
-    print(validMoves[0])
+    #print(move)
+    #print(validMoves[0])
+    if game.board[sizeToBoard[size]][start[0]][start[1]] == "wV" or game.board[sizeToBoard[size]][start[0]][start[1]] == "bV":
+        print("Vanguard")
+        if game.VanguardMoveAlternative(sizeToBoard[size], start[0], start[1], end[0], end[1]):
+            print("valid")
+            moveMade = True
+            game.makeMove(move, sizeToBoard[size])
+            client.put_chess(game.board[sizeToBoard[size]], game.whiteToMove)
+            moveMade = False
+            return  
     for k, move2 in enumerate(validMoves):
         if move2.startRow == move.startRow and move2.startCol == move.startCol and move2.endRow == move.endRow and move2.endCol == move.endCol:
             print("valid")
             moveMade = True
             game.makeMove(move, sizeToBoard[size])
             client.put_chess(game.board[sizeToBoard[size]], game.whiteToMove)
+            break
         else:
             moveMade = False
-            print("invalid")
+            
+    if not moveMade:
+        print("invalid")
 
     if moveMade:
-        validMoves = game.allValidMoves(sizeToBoard[size])
-        for i in range(1):
-            print(validMoves[i].startRow, validMoves[i].startCol, "|", validMoves[i].endRow, validMoves[i].endCol)
+        #validMoves = game.allValidMoves(sizeToBoard[size])
+        # for i in range(1):
+        #     print(validMoves[i].startRow, validMoves[i].startCol, "|", validMoves[i].endRow, validMoves[i].endCol)
         moveMade = False
 
 running = True
@@ -133,11 +145,12 @@ screeny = (size * 50) + 80
 screen = pygame.display.set_mode([screenx, screeny])
 
 validMoves = game.allValidMoves(sizeToBoard[size])
-for i in range(10):
-    print(validMoves[i].startRow, validMoves[i].startCol, "|", validMoves[i].endRow, validMoves[i].endCol)
+#for i in range(10):
+#    print(validMoves[i].startRow, validMoves[i].startCol, "|", validMoves[i].endRow, validMoves[i].endCol)
 moveMade = False
 firstselctor = ()
 game.kings_locs(sizeToBoard[size])
+van = False
 
 while running:
 
@@ -161,6 +174,11 @@ while running:
                 # print("Frist:", coords_to_notation(firstClick))
                 firstselctor = True
                 print("Frist:", coords_to_notation(firstClick))
+                if van:
+                    game.MakeVanguard(sizeToBoard[size],coords_to_notation(firstClick)[0],coords_to_notation(firstClick)[1])
+                    firstselctor = False
+                    van = False
+                    firstClick = ()
             else:
                 secondClick = location
                 # print("Second:", coords_to_notation(secondClick))
@@ -183,6 +201,9 @@ while running:
                 print("Join")
                 print()
                 game.board[sizeToBoard[size]], game.whiteToMove = client.get_chess()
+            # if on_click(event, screenx - 40 - 150, 160):
+            #     print("MakeVanguard")
+            #     van = True
 
 
     draw_squares(screen, size)
@@ -191,7 +212,10 @@ while running:
         # print("box")
         render_box(screen, GREEN, (coords_to_notation(firstClick)[1])*50 + 40, coords_to_notation(firstClick)[0]*50 + 40)
         #pygame.draw.rect(screen, GREEN, ((location[0], location[1]), (50, 50)), 0)
+    # if van:
+    #     pygame.draw.rect(screen, GREEN, ((screenx - 40 - 150, 160), (150, 50)), 3)
     render_button(screen, font, GREY, screenx - 40 - 150, 100, "White" if game.whiteToMove else "Black")
+    # render_button(screen, font, SILVER, screenx - 40 - 150, 160, "Vanguard")
     render_button(screen, font, GREY, screenx - 40 - 150, screeny - 100 - 60, "Send")
     render_button(screen, font, GREY, screenx - 40 - 150, screeny - 100 , "Refresh")
     render_button(screen, font, ORANGE, screenx - 40 - 150, (screeny / 2), "Undo")

@@ -16,10 +16,14 @@ test2 = {"s": ["test", "test2"]}
 
 
 def get_chess():
-    r = requests.get('http://localhost:5000/api/chess', data={'id': '1'})
-    print(r.json())
-    print(r.status_code)
-    return r.json()["board"], r.json()["player"]
+    try:
+        r = requests.get('http://wec2021.herokuapp.com/api/chess', data={'id': '1'})
+        print(r.json())
+        print(r.status_code)
+        return r.json()["board"], r.json()["player"]
+    except:
+        print("Problem conntecting to server GET")
+
 
 
 def board_to_json(board):
@@ -33,7 +37,10 @@ def board_to_json(board):
 
 
 def put_chess(board, player):
-    headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
-    # print(json.dumps(test))
-    # board_to_json(test)
-    r = requests.post('http://localhost:5000/api/chess', json={"board": board, "player": player}, headers=headers)
+    try:
+        headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
+        # print(json.dumps(test))
+        # board_to_json(test)
+        r = requests.post('http://wec2021.herokuapp.com/api/chess', json={"board": board, "player": player}, headers=headers)
+    except:
+        print("Problem conntecting to server PUT")
