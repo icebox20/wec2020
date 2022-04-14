@@ -3,7 +3,7 @@
 ## About
 
 Cosmetic chess is a the similar to the chess you may know, but have some very cool changes! 
-Cosmetic chess incorporated the rules of previously known standard chess with a few exciting twists and pieces. This newly modified game can be played with your friends online or in person
+Cosmetic chess incorporated the rules of previously known standard chess with a few exciting twists and pieces. This newly modified game can be played with your friends online or in person.
 ## Usage
 
 1. Using a python IDE, Run `pip install pygame` to install pygame module
